@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Modules\CurrencyExchange\Domain;
 
+use App\Modules\CurrencyExchange\Domain\Exception\InvalidAmountException;
+
 readonly class Money
 {
     public function __construct(private int $amount, private Currency $currency)
     {
         if ($this->amount < 1) {
-            throw new \InvalidArgumentException(sprintf('Value %d is not allowed as it is smaller than 1', $this->amount));
+            throw InvalidAmountException::fromAmount($this->amount);
         }
     }
 

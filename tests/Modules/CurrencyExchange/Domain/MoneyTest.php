@@ -3,6 +3,7 @@
 namespace App\Tests\Modules\CurrencyExchange\Domain;
 
 use App\Modules\CurrencyExchange\Domain\Currency;
+use App\Modules\CurrencyExchange\Domain\Exception\InvalidAmountException;
 use App\Modules\CurrencyExchange\Domain\Money;
 use PHPUnit\Framework\TestCase;
 
@@ -26,9 +27,9 @@ class MoneyTest extends TestCase
     /**
      * @dataProvider getExamplesWithImproperValues
      */
-    public function testEqualsWithImProperValues(int $amount): void
+    public function testCreationWithImProperValues(int $amount): void
     {
-        self::expectException(\InvalidArgumentException::class);
+        self::expectException(InvalidAmountException::class);
 
         $money = new Money($amount, Currency::EUR);
     }
