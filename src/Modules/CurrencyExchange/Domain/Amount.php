@@ -52,10 +52,10 @@ readonly class Amount
 
     public function divide(Amount $amount): self
     {
-        $intResult = $this->value / $amount->value;
+        $result = $this->value / $amount->value;
 
         return new Amount(
-            $intResult
+            $result
         );
     }
 
@@ -64,7 +64,7 @@ readonly class Amount
         return (int) ($value * self::PRECISION);
     }
 
-    private function createFromInteger(int $amount): Amount // TODO to delete?
+    private function createFromInteger(int $amount): Amount
     {
         return new Amount(
             $this->toFloat($amount)
