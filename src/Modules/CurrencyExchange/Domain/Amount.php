@@ -27,6 +27,13 @@ readonly class Amount
         return $this->toFloat($this->value);
     }
 
+    public function add(Amount $amount): self
+    {
+        $intResult = $this->value + $amount->value;
+
+        return $this->createFromInteger($intResult);
+    }
+
     public function subtract(Amount $amount): self
     {
         $intResult = $this->value - $amount->value;
@@ -57,7 +64,7 @@ readonly class Amount
         return (int) ($value * self::PRECISION);
     }
 
-    private function createFromInteger(int $amount): Amount
+    private function createFromInteger(int $amount): Amount // TODO to delete?
     {
         return new Amount(
             $this->toFloat($amount)
