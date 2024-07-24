@@ -10,10 +10,18 @@ readonly class Money
     {
     }
 
-    public static function from(float $amount, Currency $currency): self
+    public static function fromFloat(float $amount, Currency $currency): self
     {
         return new self(
             new Amount($amount),
+            $currency
+        );
+    }
+
+    public static function fromAmount(Amount $amount, Currency $currency): self
+    {
+        return new self(
+            $amount,
             $currency
         );
     }

@@ -39,7 +39,10 @@ class CurrencyExchangeTest extends TestCase
         );
 
         // then
-        self::assertTrue($expected->equals($result));
+        self::assertTrue(
+            $expected->equals($result),
+            sprintf('Expected %f, actual %f', $expected->getAmount()->getValue(), $result->getAmount()->getValue())
+        );
     }
 
     public function getBuyExamples(): array
@@ -47,17 +50,17 @@ class CurrencyExchangeTest extends TestCase
         return [
             'The customer sells EUR 100 for GBP' => [
                 'offer' => new BuyOffer(
-                    Money::from(100, Currency::EUR),
+                    Money::fromFloat(100, Currency::EUR),
                     Currency::GBP
                 ),
-                'expected' => Money::from(15678000, Currency::GBP),
+                'expected' => Money::fromFloat(155.21220, Currency::GBP),
             ],
             'The customer sells GBP 100 for EUR' => [
                 'offer' => new BuyOffer(
-                    Money::from(100, Currency::GBP),
+                    Money::fromFloat(100, Currency::GBP),
                     Currency::EUR
                 ),
-                'expected' => Money::from(15432000, Currency::EUR),
+                'expected' => Money::fromFloat(152.77680, Currency::EUR),
             ],
         ];
     }

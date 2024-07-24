@@ -9,9 +9,9 @@ use PHPUnit\Framework\TestCase;
 class AmountTest extends TestCase
 {
     /**
-     * @dataProvider getExamples
+     * @dataProvider getCreationFloatExamples
      */
-    public function testFromFloat(float $example, float $expected): void
+    public function testCreation(float $example, float $expected): void
     {
         // when
         $result = new Amount($example);
@@ -21,9 +21,9 @@ class AmountTest extends TestCase
     }
 
     /**
-     * @dataProvider getExamplesWithImproperValues
+     * @dataProvider getCreationWithImproperValuesExamples
      */
-    public function testFromFloatWithImProperValues(float $example): void
+    public function testCreationWithImProperValues(float $example): void
     {
         self::expectException(InvalidAmountException::class);
 
@@ -62,17 +62,17 @@ class AmountTest extends TestCase
         self::assertEquals($expected, $result->getValue());
     }
 
-    public function getExamples(): array
+    public function getCreationFloatExamples(): array
     {
         return [
             [1, 1.0],
             [1.0, 1.0],
             [1.1, 1.1],
-            [3.141592653589793238462643383279502884197, 3.1415],
+            [3.141592653589793238462643383279502884197, 3.14159],
         ];
     }
 
-    public function getExamplesWithImproperValues(): array
+    public function getCreationWithImproperValuesExamples(): array
     {
         return [
             [0],
@@ -87,8 +87,9 @@ class AmountTest extends TestCase
             [2, 1, 2],
             [2, 2, 4],
             [2, 20, 40],
+            [1, 0.01, 0.01],
             [2, 3.3, 6.6],
-            [3.141592653589793238462643383279502884197, 3.141592653589793238462643383279502884197, 9.8690],
+            [3.141592653589793238462643383279502884197, 3.141592653589793238462643383279502884197, 9.86958],
         ];
     }
 
@@ -96,7 +97,7 @@ class AmountTest extends TestCase
     {
         return [
             [2, 1, 1],
-            [20, 1.1, 18.9],
+            [20, 1.1, 18.89999],
         ];
     }
 }

@@ -14,7 +14,7 @@ class MoneyTest extends TestCase
     public function testEquals(Money $example, bool $expected): void
     {
         // given
-        $money = Money::from(100, Currency::EUR);
+        $money = Money::fromFloat(100, Currency::EUR);
 
         // when
         $result = $money->equals($example);
@@ -26,9 +26,9 @@ class MoneyTest extends TestCase
     public function getExamples(): array
     {
         return [
-            '100 EUR' => [Money::from(100, Currency::EUR), true],
-            '1000 EUR' => [Money::from(1000, Currency::EUR), false],
-            '100 GBP' => [Money::from(100, Currency::GBP), false],
+            '100 EUR' => [Money::fromFloat(100, Currency::EUR), true],
+            '1000 EUR' => [Money::fromFloat(1000, Currency::EUR), false],
+            '100 GBP' => [Money::fromFloat(100, Currency::GBP), false],
         ];
     }
 }

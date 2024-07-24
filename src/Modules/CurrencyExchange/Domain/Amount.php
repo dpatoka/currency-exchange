@@ -8,7 +8,7 @@ use App\Modules\CurrencyExchange\Domain\Exception\InvalidAmountException;
 
 readonly class Amount
 {
-    private const int PRECISION = 10000;
+    private const int PRECISION = 100000;
     private int $value;
 
     public function __construct(float $floatValue)
