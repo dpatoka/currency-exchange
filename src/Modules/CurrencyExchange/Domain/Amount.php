@@ -73,6 +73,8 @@ readonly class Amount
 
     private function toFloat(int $value): float
     {
-        return $value / self::PRECISION;
+        $floatValue = $value / self::PRECISION;
+
+        return round($floatValue, 4);
     }
 }

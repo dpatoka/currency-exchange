@@ -6,6 +6,7 @@ use App\Modules\CurrencyExchange\Domain\BuyOffer;
 use App\Modules\CurrencyExchange\Domain\Currency;
 use App\Modules\CurrencyExchange\Domain\CurrencyExchange;
 use App\Modules\CurrencyExchange\Domain\Money;
+use App\Modules\CurrencyExchange\Domain\SellOffer;
 use App\Modules\CurrencyExchange\Infrastructure\Adapter\HardcodedCurrencyExchangeRateProvider;
 use App\Modules\CurrencyExchange\Infrastructure\Adapter\HardcodedFeeProvider;
 use PHPUnit\Framework\TestCase;
@@ -45,6 +46,28 @@ class CurrencyExchangeTest extends TestCase
         );
     }
 
+    /**
+     * @dataProvider getSellExamples
+     */
+    public function testSell(SellOffer $offer, Money $expected): void
+    {
+        // given
+        $currencyExchange = new CurrencyExchange();
+
+        // when
+        $result = $currencyExchange->sell(
+            $offer,
+            $this->currencyExchangeRateProvider,
+            $this->feeProvider
+        );
+
+        // then
+        self::assertTrue(
+            $expected->equals($result),
+            sprintf('Expected %f, actual %f', $expected->getAmount()->getValue(), $result->getAmount()->getValue())
+        );
+    }
+
     public function getBuyExamples(): array
     {
         return [
@@ -61,6 +84,26 @@ class CurrencyExchangeTest extends TestCase
                     Currency::EUR
                 ),
                 'expected' => Money::fromFloat(152.77680, Currency::EUR),
+            ],
+        ];
+    }
+
+    public function getSellExamples(): array
+    {
+        return [
+            'The customer buys 100 GBP for EUR' => [
+                'offer' => new SellOffer(
+                    Money::fromFloat(100, Currency::GBP),
+                    Currency::EUR
+                ),
+                'expected' => Money::fromFloat(64.421481, Currency::EUR),
+            ],
+            'The customer buys 100 EUR for GBP' => [
+                'offer' => new SellOffer(
+                    Money::fromFloat(100, Currency::EUR),
+                    Currency::GBP
+                ),
+                'expected' => Money::fromFloat(65.44841, Currency::GBP),
             ],
         ];
     }

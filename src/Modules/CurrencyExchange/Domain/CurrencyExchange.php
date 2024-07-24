@@ -6,24 +6,45 @@ namespace App\Modules\CurrencyExchange\Domain;
 
 use App\Modules\CurrencyExchange\Domain\Port\CurrencyExchangeRateProvider;
 use App\Modules\CurrencyExchange\Domain\Port\FeeProvider;
+use App\Modules\CurrencyExchange\Infrastructure\Adapter\HardcodedCurrencyExchangeRateProvider;
+use App\Modules\CurrencyExchange\Infrastructure\Adapter\HardcodedFeeProvider;
 
 class CurrencyExchange
 {
     public function buy(BuyOffer $offer, CurrencyExchangeRateProvider $exchangeRateProvider, FeeProvider $feeProvider): Money
     {
-        $exchangeRate = $this->getExchangeRate($offer, $exchangeRateProvider);
+        $exchangeRate = $this->getExchangeRateForBuying($offer, $exchangeRateProvider);
         $fee = $feeProvider->getPercentage();
 
-        $cost = $offer->getAmountToBuy()->getAmount()->multiply($exchangeRate->getAmount());
+        $cost = $offer->getMoneyToBuy()->getAmount()->multiply($exchangeRate->getAmount());
         $feeAmount = $cost->multiply($fee);
         $amountForClient = $cost->subtract($feeAmount);
 
-        return Money::fromAmount($amountForClient, $offer->getCurrencyToReturn());
+        return Money::fromAmount($amountForClient, $offer->getCurrencyToReturnForCustomer());
     }
 
-    private function getExchangeRate(BuyOffer $offer, CurrencyExchangeRateProvider $exchangeRateProvider): CurrencyExchangeRate
+    public function sell(SellOffer $offer, HardcodedCurrencyExchangeRateProvider $exchangeRateProvider, HardcodedFeeProvider $feeProvider): Money
     {
-        $exchangeCurrencies = new ExchangedCurrencies($offer->getCurrencyToBuy(), $offer->getCurrencyToReturn());
+        $exchangeRate = $this->getExchangeRateForSelling($offer, $exchangeRateProvider);
+        $fee = $feeProvider->getPercentage();
+
+        $baseValue = $offer->getMoneyToSell()->getAmount()->divide($exchangeRate->getAmount());
+        $feeAmount = $baseValue->multiply($fee);
+        $finalPrice = $baseValue->add($feeAmount);
+
+        return Money::fromAmount($finalPrice, $offer->getCurrencyToAcceptFromCustomer());
+    }
+
+    private function getExchangeRateForBuying(BuyOffer $offer, CurrencyExchangeRateProvider $exchangeRateProvider): CurrencyExchangeRate
+    {
+        $exchangeCurrencies = new ExchangedCurrencies($offer->getCurrencyToBuy(), $offer->getCurrencyToReturnForCustomer());
+
+        return $exchangeRateProvider->getForCurrencies($exchangeCurrencies);
+    }
+
+    private function getExchangeRateForSelling(SellOffer $offer, CurrencyExchangeRateProvider $exchangeRateProvider): CurrencyExchangeRate
+    {
+        $exchangeCurrencies = new ExchangedCurrencies($offer->getCurrencyToAcceptFromCustomer(), $offer->getCurrencyToSell());
 
         return $exchangeRateProvider->getForCurrencies($exchangeCurrencies);
     }
