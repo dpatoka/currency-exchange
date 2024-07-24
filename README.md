@@ -29,6 +29,25 @@ The customer is charged a fee of 1% of the amount:
 - Framework-agnostic
 - Everything tested with unit tests
 
+## Architecture description
+1. To satisfy framework-agnostic approach:
+- I've used Ports and Adapters architecture.  
+  - To fulfill this task requirements I needed to implement only Domain and Infrastructure layers.
+  - Application and API/UI are omitted. In real-life scenario they will be present.
+  - Domain layer is free from outer world dependencies.
+- I've implemented by my own the [Money Pattern](https://martinfowler.com/eaaCatalog/money.html).
+2. I've used DDD so:
+- Classes expose behavior and encapsulate data.
+- `CurrencyExchange` is the Aggregate Root which encapsulates business logic and inner objects.
+3. Tests
+- For me tests are a design tool, living documentation and safety net (regression testing). I do TDD 🙂. 
+- I like the [Detroit TDD school](https://zone84.tech/architecture/london-and-detroit-schools-of-unit-tests/) (Kent Beck's) so:
+  - Unit under tests is not the method or the class. It's the feature with the stable interface. My unit tests are [sociable](https://martinfowler.com/bliki/UnitTest.html). 
+  - I use mocks for cutting off:
+    - heavy dependencies - to be able to test only part of the huge process,
+    - outer-world dependencies - things I have no control.
+  - Given all of that, here I don't use mocks.
+
 ## Docker image information
 I've used [Symfony Docker](https://github.com/dunglas/symfony-docker).
 A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework,
