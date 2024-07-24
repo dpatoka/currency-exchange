@@ -16,8 +16,9 @@ class CurrencyExchange implements AggregateRoot
     {
         $exchangeRate = $this->getExchangeRateForBuying($offer, $exchangeRateProvider);
         $fee = $feeProvider->getPercentage();
+        $amountToBuy = $offer->getMoneyToBuy()->getAmount();
 
-        $cost = $offer->getMoneyToBuy()->getAmount()->multiply($exchangeRate->getAmount());
+        $cost = $amountToBuy->multiply($exchangeRate->getAmount());
         $feeAmount = $cost->multiply($fee);
         $amountForClient = $cost->subtract($feeAmount);
 
@@ -28,8 +29,9 @@ class CurrencyExchange implements AggregateRoot
     {
         $exchangeRate = $this->getExchangeRateForSelling($offer, $exchangeRateProvider);
         $fee = $feeProvider->getPercentage();
+        $amountToSell = $offer->getMoneyToSell()->getAmount();
 
-        $baseValue = $offer->getMoneyToSell()->getAmount()->divide($exchangeRate->getAmount());
+        $baseValue = $amountToSell->divide($exchangeRate->getAmount());
         $feeAmount = $baseValue->multiply($fee);
         $finalPrice = $baseValue->add($feeAmount);
 
