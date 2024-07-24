@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace App\Modules\CurrencyExchange\Domain;
 
-use App\Modules\CurrencyExchange\Domain\Exception\InvalidAmountException;
-
 readonly class CurrencyExchangeRate
 {
-    public function __construct(private ExchangedCurrencies $currencies, private int $amount)
+    public function __construct(private ExchangedCurrencies $currencies, private Amount $amount)
     {
-        if ($this->amount < 1) {
-            throw InvalidAmountException::fromAmount($this->amount);
-        }
     }
 
     public function getCurrencies(): ExchangedCurrencies
@@ -20,14 +15,14 @@ readonly class CurrencyExchangeRate
         return $this->currencies;
     }
 
-    public function getAmount(): int
+    public function getAmount(): Amount
     {
         return $this->amount;
     }
 
     public function equals(CurrencyExchangeRate $rate): bool
     {
-        if ($rate->amount !== $this->amount) {
+        if ($rate->amount->getValue() !== $this->amount->getValue()) {
             return false;
         }
 
