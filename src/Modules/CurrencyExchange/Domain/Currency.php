@@ -8,4 +8,5 @@ enum Currency
 {
     case EUR;
     case GBP;
+    case ESP;
 }

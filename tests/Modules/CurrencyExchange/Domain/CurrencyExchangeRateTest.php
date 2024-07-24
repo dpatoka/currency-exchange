@@ -2,10 +2,8 @@
 
 namespace App\Tests\Modules\CurrencyExchange\Domain;
 
-use App\Modules\CurrencyExchange\Domain\Amount;
 use App\Modules\CurrencyExchange\Domain\Currency;
 use App\Modules\CurrencyExchange\Domain\CurrencyExchangeRate;
-use App\Modules\CurrencyExchange\Domain\ExchangedCurrencies;
 use PHPUnit\Framework\TestCase;
 
 class CurrencyExchangeRateTest extends TestCase
@@ -16,12 +14,10 @@ class CurrencyExchangeRateTest extends TestCase
     public function testEqualsWithProperValues(CurrencyExchangeRate $example, bool $expected): void
     {
         // given
-        $exchangeRate = new CurrencyExchangeRate(
-            new ExchangedCurrencies(
-                Currency::EUR,
-                Currency::GBP
-            ),
-            new Amount(1.5678)
+        $exchangeRate = CurrencyExchangeRate::from(
+            Currency::EUR,
+            Currency::GBP,
+            1.5678
         );
 
         // when
@@ -35,32 +31,26 @@ class CurrencyExchangeRateTest extends TestCase
     {
         return [
             [
-                'example' => new CurrencyExchangeRate(
-                    new ExchangedCurrencies(
-                        Currency::EUR,
-                        Currency::GBP
-                    ),
-                    new Amount(1.5678)
+                'example' => CurrencyExchangeRate::from(
+                    Currency::EUR,
+                    Currency::GBP,
+                    1.5678
                 ),
                 'expected' => true,
             ],
             [
-                'example' => new CurrencyExchangeRate(
-                    new ExchangedCurrencies(
-                        Currency::EUR,
-                        Currency::GBP
-                    ),
-                    new Amount(1.5677)
+                'example' => CurrencyExchangeRate::from(
+                    Currency::EUR,
+                    Currency::GBP,
+                    1.5677
                 ),
                 'expected' => false,
             ],
             [
-                'example' => new CurrencyExchangeRate(
-                    new ExchangedCurrencies(
-                        Currency::GBP,
-                        Currency::EUR
-                    ),
-                    new Amount(1.5678)
+                'example' => CurrencyExchangeRate::from(
+                    Currency::GBP,
+                    Currency::EUR,
+                    1.5678
                 ),
                 'expected' => false,
             ],

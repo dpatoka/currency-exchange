@@ -15,7 +15,7 @@ class ExchangedCurrenciesTest extends TestCase
     {
         self::expectException(\InvalidArgumentException::class);
 
-        $money = new ExchangedCurrencies($from, $to);
+        $exchangedCurrencies = new ExchangedCurrencies($from, $to);
     }
 
     /**
@@ -23,9 +23,24 @@ class ExchangedCurrenciesTest extends TestCase
      */
     public function testCreationWithValidValues(Currency $from, Currency $to): void
     {
-        $money = new ExchangedCurrencies($from, $to);
+        $exchangedCurrencies = new ExchangedCurrencies($from, $to);
 
-        self::assertInstanceOf(ExchangedCurrencies::class, $money);
+        self::assertInstanceOf(ExchangedCurrencies::class, $exchangedCurrencies);
+    }
+
+    /**
+     * @dataProvider getEqualsData
+     */
+    public function testEquals(Currency $from, Currency $to, bool $expected): void
+    {
+        // given
+        $exchangedCurrencies = new ExchangedCurrencies(Currency::GBP, Currency::EUR);
+
+        // when
+        $result = $exchangedCurrencies->equals(new ExchangedCurrencies($from, $to));
+
+        // then
+        self::assertEquals($expected, $result);
     }
 
     public function getImproperData(): array
@@ -41,6 +56,14 @@ class ExchangedCurrenciesTest extends TestCase
         return [
             [Currency::GBP, Currency::EUR],
             [Currency::EUR, Currency::GBP],
+        ];
+    }
+
+    public function getEqualsData()
+    {
+        return [
+            [Currency::GBP, Currency::EUR, true],
+            [Currency::EUR, Currency::GBP, false],
         ];
     }
 }

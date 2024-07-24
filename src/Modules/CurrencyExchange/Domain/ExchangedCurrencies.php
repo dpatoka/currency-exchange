@@ -13,6 +13,19 @@ readonly class ExchangedCurrencies
         }
     }
 
+    public function equals(ExchangedCurrencies $currencies): bool
+    {
+        if ($this->from !== $currencies->from) {
+            return false;
+        }
+
+        if ($this->to !== $currencies->to) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function getFrom(): Currency
     {
         return $this->from;

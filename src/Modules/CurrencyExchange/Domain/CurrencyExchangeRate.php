@@ -10,6 +10,17 @@ readonly class CurrencyExchangeRate
     {
     }
 
+    public static function from(Currency $from, Currency $to, float $amount): self
+    {
+        return new self(
+            new ExchangedCurrencies(
+                $from,
+                $to
+            ),
+            new Amount($amount)
+        );
+    }
+
     public function getCurrencies(): ExchangedCurrencies
     {
         return $this->currencies;
