@@ -24,11 +24,25 @@ readonly class Amount
 
     public function getValue(): float
     {
-        return $this->value / self::PRECISION;
+        return $this->toFloat($this->value);
+    }
+
+    public function multiply(Amount $amount): self
+    {
+        $intResult = $this->value * $amount->value;
+
+        return new Amount(
+            $intResult / self::PRECISION / self::PRECISION
+        );
     }
 
     private function toInt(float $value): int
     {
         return (int) ($value * self::PRECISION);
+    }
+
+    private function toFloat(int $value): float
+    {
+        return $value / self::PRECISION;
     }
 }
