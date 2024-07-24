@@ -46,6 +46,22 @@ class AmountTest extends TestCase
         self::assertEquals($expected, $result->getValue());
     }
 
+    /**
+     * @dataProvider subtractExamples
+     */
+    public function testSubtract(float $example1, float $example2, float $expected): void
+    {
+        // given
+        $amount1 = new Amount($example1);
+        $amount2 = new Amount($example2);
+
+        // when
+        $result = $amount1->subtract($amount2);
+
+        // then
+        self::assertEquals($expected, $result->getValue());
+    }
+
     public function getExamples(): array
     {
         return [
@@ -73,6 +89,14 @@ class AmountTest extends TestCase
             [2, 20, 40],
             [2, 3.3, 6.6],
             [3.141592653589793238462643383279502884197, 3.141592653589793238462643383279502884197, 9.8690],
+        ];
+    }
+
+    public function subtractExamples(): array
+    {
+        return [
+            [2, 1, 1],
+            [20, 1.1, 18.9],
         ];
     }
 }

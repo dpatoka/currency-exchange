@@ -27,6 +27,13 @@ readonly class Amount
         return $this->toFloat($this->value);
     }
 
+    public function subtract(Amount $amount): self
+    {
+        $intResult = $this->value - $amount->value;
+
+        return $this->createFromInteger($intResult);
+    }
+
     public function multiply(Amount $amount): self
     {
         $intResult = $this->value * $amount->value;
@@ -39,6 +46,13 @@ readonly class Amount
     private function toInt(float $value): int
     {
         return (int) ($value * self::PRECISION);
+    }
+
+    private function createFromInteger(int $amount): Amount
+    {
+        return new Amount(
+            $this->toFloat($amount)
+        );
     }
 
     private function toFloat(int $value): float
