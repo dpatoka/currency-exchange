@@ -2,8 +2,8 @@
 
 namespace App\Tests\Modules\CurrencyExchange\Domain;
 
+use App\Modules\CurrencyExchange\Domain\Amount;
 use App\Modules\CurrencyExchange\Domain\Currency;
-use App\Modules\CurrencyExchange\Domain\Exception\InvalidAmountException;
 use App\Modules\CurrencyExchange\Domain\Money;
 use PHPUnit\Framework\TestCase;
 
@@ -12,42 +12,24 @@ class MoneyTest extends TestCase
     /**
      * @dataProvider getExamples
      */
-    public function testEqualsWithProperValues(Money $example, bool $expected): void
+    public function testEquals(Money $example, bool $expected): void
     {
         // given
-        $money = new Money(100, Currency::EUR);
+        $money = new Money(new Amount(100), Currency::EUR);
 
         // when
         $result = $money->equals($example);
 
         // then
-        self::assertEquals($result, $expected);
-    }
-
-    /**
-     * @dataProvider getExamplesWithImproperValues
-     */
-    public function testCreationWithImProperValues(int $amount): void
-    {
-        self::expectException(InvalidAmountException::class);
-
-        $money = new Money($amount, Currency::EUR);
+        self::assertEquals($expected, $result);
     }
 
     public function getExamples(): array
     {
         return [
-            [new Money(100, Currency::EUR), true],
-            [new Money(1000, Currency::EUR), false],
-            [new Money(100, Currency::GBP), false],
-        ];
-    }
-
-    public function getExamplesWithImproperValues(): array
-    {
-        return [
-            [0],
-            [-100],
+            '100 EUR' => [new Money(new Amount(100), Currency::EUR), true],
+            '1000 EUR' => [new Money(new Amount(1000), Currency::EUR), false],
+            '100 GBP' => [new Money(new Amount(100), Currency::GBP), false],
         ];
     }
 }
