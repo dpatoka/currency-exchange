@@ -3,6 +3,7 @@
 namespace App\Tests\Modules\CurrencyExchange\Domain;
 
 use App\Modules\CurrencyExchange\Domain\Currency;
+use App\Modules\CurrencyExchange\Domain\Exception\ExchangedCurrenciesException;
 use App\Modules\CurrencyExchange\Domain\ExchangedCurrencies;
 use PHPUnit\Framework\TestCase;
 
@@ -13,7 +14,7 @@ class ExchangedCurrenciesTest extends TestCase
      */
     public function testCreationWithImproperValues(Currency $from, Currency $to): void
     {
-        self::expectException(\InvalidArgumentException::class);
+        self::expectException(ExchangedCurrenciesException::class);
 
         $exchangedCurrencies = new ExchangedCurrencies($from, $to);
     }

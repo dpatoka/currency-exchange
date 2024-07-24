@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Modules\CurrencyExchange\Domain;
 
-readonly class Money
+use App\BuildingBlocks\Domain\ValueObject;
+
+readonly class Money implements ValueObject
 {
     private function __construct(private Amount $amount, private Currency $currency)
     {

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Modules\CurrencyExchange\Domain;
 
-readonly class CurrencyExchangeRate
+use App\BuildingBlocks\Domain\ValueObject;
+
+readonly class CurrencyExchangeRate implements ValueObject
 {
     public function __construct(private ExchangedCurrencies $currencies, private Amount $amount)
     {

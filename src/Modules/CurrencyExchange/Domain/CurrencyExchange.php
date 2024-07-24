@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Modules\CurrencyExchange\Domain;
 
+use App\BuildingBlocks\Domain\AggregateRoot;
 use App\Modules\CurrencyExchange\Domain\Port\CurrencyExchangeRateProvider;
 use App\Modules\CurrencyExchange\Domain\Port\FeeProvider;
 use App\Modules\CurrencyExchange\Infrastructure\Adapter\HardcodedCurrencyExchangeRateProvider;
 use App\Modules\CurrencyExchange\Infrastructure\Adapter\HardcodedFeeProvider;
 
-class CurrencyExchange
+class CurrencyExchange implements AggregateRoot
 {
     public function buy(BuyOffer $offer, CurrencyExchangeRateProvider $exchangeRateProvider, FeeProvider $feeProvider): Money
     {

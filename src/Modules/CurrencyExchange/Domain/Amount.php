@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Modules\CurrencyExchange\Domain;
 
+use App\BuildingBlocks\Domain\ValueObject;
 use App\Modules\CurrencyExchange\Domain\Exception\InvalidAmountException;
 
-readonly class Amount
+readonly class Amount implements ValueObject
 {
     private const int PRECISION = 100000;
     private int $value;
