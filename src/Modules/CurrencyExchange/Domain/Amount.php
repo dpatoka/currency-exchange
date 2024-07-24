@@ -9,7 +9,8 @@ use App\Modules\CurrencyExchange\Domain\Exception\InvalidAmountException;
 
 readonly class Amount implements ValueObject
 {
-    private const int PRECISION = 100000;
+    private const int NUMBER_FOR_CONVERTING_TO_INTEGER = 100000;
+    private const int FLOAT_PRECISION = 4;
     private int $value;
 
     public function __construct(float $floatValue)
@@ -47,7 +48,7 @@ readonly class Amount implements ValueObject
         $intResult = $this->value * $amount->value;
 
         return new Amount(
-            $intResult / self::PRECISION / self::PRECISION
+            $intResult / self::NUMBER_FOR_CONVERTING_TO_INTEGER / self::NUMBER_FOR_CONVERTING_TO_INTEGER
         );
     }
 
@@ -62,7 +63,7 @@ readonly class Amount implements ValueObject
 
     private function toInt(float $value): int
     {
-        return (int) ($value * self::PRECISION);
+        return (int) ($value * self::NUMBER_FOR_CONVERTING_TO_INTEGER);
     }
 
     private function createFromInteger(int $amount): Amount
@@ -74,8 +75,8 @@ readonly class Amount implements ValueObject
 
     private function toFloat(int $value): float
     {
-        $floatValue = $value / self::PRECISION;
+        $floatValue = $value / self::NUMBER_FOR_CONVERTING_TO_INTEGER;
 
-        return round($floatValue, 4);
+        return round($floatValue, self::FLOAT_PRECISION);
     }
 }
