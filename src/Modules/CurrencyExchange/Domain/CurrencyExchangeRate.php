@@ -23,11 +23,6 @@ readonly class CurrencyExchangeRate implements ValueObject
         );
     }
 
-    public function getCurrencies(): ExchangedCurrencies
-    {
-        return $this->currencies;
-    }
-
     public function getAmount(): Amount
     {
         return $this->amount;
