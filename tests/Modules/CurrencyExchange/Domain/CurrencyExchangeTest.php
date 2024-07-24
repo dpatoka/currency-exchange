@@ -47,17 +47,17 @@ class CurrencyExchangeTest extends TestCase
         return [
             'The customer sells EUR 100 for GBP' => [
                 'offer' => new BuyOffer(
-                    new Money(100, Currency::EUR),
+                    Money::from(100, Currency::EUR),
                     Currency::GBP
                 ),
-                'expected' => new Money(15678000, Currency::GBP),
+                'expected' => Money::from(15678000, Currency::GBP),
             ],
             'The customer sells GBP 100 for EUR' => [
                 'offer' => new BuyOffer(
-                    new Money(100, Currency::GBP),
+                    Money::from(100, Currency::GBP),
                     Currency::EUR
                 ),
-                'expected' => new Money(15432000, Currency::EUR),
+                'expected' => Money::from(15432000, Currency::EUR),
             ],
         ];
     }

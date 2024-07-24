@@ -6,8 +6,16 @@ namespace App\Modules\CurrencyExchange\Domain;
 
 readonly class Money
 {
-    public function __construct(private Amount $amount, private Currency $currency)
+    private function __construct(private Amount $amount, private Currency $currency)
     {
+    }
+
+    public static function from(float $amount, Currency $currency): self
+    {
+        return new self(
+            new Amount($amount),
+            $currency
+        );
     }
 
     public function getAmount(): Amount
