@@ -62,6 +62,22 @@ class AmountTest extends TestCase
         self::assertEquals($expected, $result->getValue());
     }
 
+    /**
+     * @dataProvider divideExamples
+     */
+    public function testDivide(float $example1, float $example2, float $expected): void
+    {
+        // given
+        $amount1 = new Amount($example1);
+        $amount2 = new Amount($example2);
+
+        // when
+        $result = $amount1->divide($amount2);
+
+        // then
+        self::assertEquals($expected, $result->getValue());
+    }
+
     public function getCreationFloatExamples(): array
     {
         return [
@@ -98,6 +114,17 @@ class AmountTest extends TestCase
         return [
             [2, 1, 1],
             [20, 1.1, 18.89999],
+        ];
+    }
+
+    public function divideExamples(): array
+    {
+        return [
+            [1, 1, 1],
+            [2, 1, 2],
+            [6, 3, 2],
+            [1, 2, 0.5],
+            [9.86958, 3.141592653589793238462643383279502884197, 3.14158],
         ];
     }
 }

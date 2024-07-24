@@ -43,6 +43,15 @@ readonly class Amount
         );
     }
 
+    public function divide(Amount $amount): self
+    {
+        $intResult = $this->value / $amount->value;
+
+        return new Amount(
+            $intResult
+        );
+    }
+
     private function toInt(float $value): int
     {
         return (int) ($value * self::PRECISION);
