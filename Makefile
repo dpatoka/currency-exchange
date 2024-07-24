@@ -32,15 +32,10 @@ help: ## Outputs this help screen
 ## —— Configuration 🤖 ———————————————————————————————————————————————————————————————
 setup: ## prepares app for local usage
 	@$(MAKE) setup-local
-	@$(MAKE) setup-tests
 
 setup-local:
 	@$(MAKE) build
 	@$(DOCKER_COMP) up --pull always -d --wait
-	@$(MAKE) drop-db
-	@$(MAKE) create-db
-	@$(MAKE) migrate-no-interaction
-	@$(MAKE) load-fixtures-no-interaction
 
 setup-tests:
 	@$(MAKE) drop-test-db
